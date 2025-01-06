@@ -34,25 +34,4 @@ public class Patient {
     public String getAddress() {
         return address;
     }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
 }

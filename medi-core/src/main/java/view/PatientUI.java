@@ -1,34 +1,29 @@
 package view;
 
-import model.Patient;
 import controller.PatientController;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class PatientUI {
     private JPanel panel1;
     private JTextField textName;
     private JTextField textEmail;
     private JTextField textContactNumber;
-    private JTextField textAddress;
+    private JTextArea textAddress;
     private JButton addPatientBtn;
+    private JRadioButton maleRadioButton;
+    private JRadioButton femaleRadioButton;
 
-    Patient ObjPatient;
+    // create a object using controller class to add patient details to the database
     PatientController objController;
 
-    Patient[] patientArray;
-
-    ArrayList<Patient> patientList;
-    int patientCount;
-
     public PatientUI() {
+        // create a object using controller class to add patient details to the database
         objController = new PatientController();
-        patientArray = new Patient[100];
-        patientList = new ArrayList<>();
-        patientCount = 0;
+        int patientCount = 0;
 
         addPatientBtn.addActionListener(new ActionListener() {
             @Override
@@ -36,28 +31,76 @@ public class PatientUI {
                 int pid = patientCount + 1;
                 String name = textName.getText();
                 String email = textEmail.getText();
+
+                String gender = "";
+                if (maleRadioButton.isSelected()) {
+                    gender = "male";
+                }
+                if (femaleRadioButton.isSelected()) {
+                    gender = "female";
+                }
+
                 String contactNumber = textContactNumber.getText();
                 String address = textAddress.getText();
 
-                ObjPatient = objController.addPatient(pid, name, email, contactNumber, address);
+                // add patient details to the object of model class using controller class
+                objController.addPatient(pid, name, email, contactNumber, address);
+
+                // add patient details to the database using controller class
                 if (!objController.addPatientToDataBase()) {
                     JOptionPane.showMessageDialog(null, "Error in adding patient");
                     return;
                 }
-
-                patientArray[patientCount] = ObjPatient;
-                patientCount++;
-
                 JOptionPane.showMessageDialog(null, "Patient added successfully!");
+
+                // clear the text fields after adding patient details
+                textName.setText("");
+                textEmail.setText("");
+                textContactNumber.setText("");
+                textAddress.setText("");
             }
         });
+        maleRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                femaleRadioButton.setSelected(false);
+            }
+        });
+        femaleRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                maleRadioButton.setSelected(false);
+            }
+        });
+    }
+
+    public JPanel getPanel1() {
+        return panel1;
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("PatientUI");
         frame.setSize(300, 300);
+        
         frame.setContentPane(new PatientUI().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        textName = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textName.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        textEmail = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textEmail.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        textContactNumber = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textContactNumber.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        textAddress = new CreateUIComponentDashboard.CustomTextArea(20, 20);
+
+        addPatientBtn = new CreateUIComponentDashboard.CustomButton("Add Patient");
+        addPatientBtn.setPreferredSize(new Dimension(150, 30));
     }
 }
