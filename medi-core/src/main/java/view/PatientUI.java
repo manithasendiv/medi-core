@@ -81,7 +81,6 @@ public class PatientUI {
     public static void main(String[] args) {
         JFrame frame = new JFrame("PatientUI");
         frame.setSize(300, 300);
-        
         frame.setContentPane(new PatientUI().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -95,12 +94,21 @@ public class PatientUI {
         textEmail = new CreateUIComponentDashboard.RoundedJTextField(20);
         textEmail.setFont(new Font("Arial", Font.PLAIN, 15));
 
+        maleRadioButton = new CreateUIComponentDashboard.CustomRadioButton("Male");
+        femaleRadioButton = new CreateUIComponentDashboard.CustomRadioButton("Female");
+
         textContactNumber = new CreateUIComponentDashboard.RoundedJTextField(20);
         textContactNumber.setFont(new Font("Arial", Font.PLAIN, 15));
 
         textAddress = new CreateUIComponentDashboard.CustomTextArea(20, 20);
 
         addPatientBtn = new CreateUIComponentDashboard.CustomButton("Add Patient");
-        addPatientBtn.setPreferredSize(new Dimension(150, 30));
+        addPatientBtn.setPreferredSize(new Dimension(200, 35));
+
+        ImageIcon addIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\heart.png");
+        Image iconImage = addIcon.getImage();
+        Image newAddIcon = iconImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        addIcon = new ImageIcon(newAddIcon);
+        addPatientBtn.setIcon(addIcon);
     }
 }

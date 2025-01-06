@@ -23,6 +23,7 @@ public class DashboardUI {
         sidepanel1.setOpaque(false);
         logoutArea.setOpaque(false);
         logoArea.setOpaque(false);
+        ViewPanel.setSize(600, 500);
 
         patientsButton.addActionListener(new ActionListener() {
             @Override
@@ -65,7 +66,7 @@ public class DashboardUI {
         JFrame frame = new JFrame("MediCore");
         frame.setContentPane(new DashboardUI().BackPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 500);
+        frame.setSize(800, 550);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);

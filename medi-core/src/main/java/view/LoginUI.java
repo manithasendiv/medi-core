@@ -67,7 +67,7 @@ public class LoginUI {
                             JFrame homeFrame = new JFrame("HomeUI");
                             homeFrame.setContentPane(new DashboardUI().getPanel1());
                             homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                            homeFrame.setSize(600, 500);
+                            homeFrame.setSize(800, 550);
                             homeFrame.setVisible(true);
                             Dimension dim1 = Toolkit.getDefaultToolkit().getScreenSize();
                             homeFrame.setLocation(dim1.width/2-homeFrame.getSize().width/2, dim1.height/2-homeFrame.getSize().height/2);
@@ -79,7 +79,7 @@ public class LoginUI {
                             JFrame pharmacistFrame = new JFrame("PharmacistUI");
                             pharmacistFrame.setContentPane(new InventoryUI().getPanel1());
                             pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                            pharmacistFrame.setSize(600, 500);
+                            pharmacistFrame.setSize(800, 550);
                             pharmacistFrame.setVisible(true);
                             Dimension dim2 = Toolkit.getDefaultToolkit().getScreenSize();
                             pharmacistFrame.setLocation(dim2.width/2-pharmacistFrame.getSize().width/2, dim2.height/2-pharmacistFrame.getSize().height/2);
@@ -121,7 +121,7 @@ public class LoginUI {
         frame.setIconImage(new ImageIcon("src/main/java/assets/icon.png").getImage());
         frame.setContentPane(new LoginUI().BackPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 500);
+        frame.setSize(800, 550);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);

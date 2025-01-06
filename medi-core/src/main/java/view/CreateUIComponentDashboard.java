@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -235,6 +237,135 @@ public class CreateUIComponentDashboard {
         // Method to get placeholder text
         public String getPlaceholder() {
             return this.placeholder;
+        }
+    }
+
+    static class CustomRadioButton extends JRadioButton {
+        private Color baseColor = new Color(236, 236, 236, 255);
+        private Color hoverColor = new Color(157, 198, 232);
+        private Color selectedColor = Color.BLACK;
+        private Color borderColor = Color.DARK_GRAY;
+
+        // Constructor
+        public CustomRadioButton(String text) {
+            super(text);
+            setOpaque(false); // Make the button transparent
+            setFocusPainted(false); // Remove focus painting
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            // Add mouse listeners for hover effects
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    baseColor = hoverColor; // Change to hover color
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    baseColor = new Color(236, 236, 236, 255); // Reset to default color
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Draw the button
+            int diameter = 20; // Circle size
+            int padding = 0; // Padding around the circle
+
+            // Outer circle (border)
+            g2.setColor(borderColor);
+            g2.fillOval(padding, (getHeight() - diameter) / 2, diameter, diameter);
+
+            // Inner circle (background)
+            g2.setColor(baseColor);
+            g2.fillOval(padding + 2, (getHeight() - diameter) / 2 + 2, diameter - 4, diameter - 4);
+
+            // Draw selected state
+            if (isSelected()) {
+                g2.setColor(selectedColor);
+                int innerDiameter = diameter - 8;
+                g2.fillOval(padding + 4, (getHeight() - innerDiameter) / 2, innerDiameter, innerDiameter);
+            }
+
+            // Draw the text
+            g2.setColor(getForeground());
+            g2.setFont(getFont());
+            FontMetrics metrics = g2.getFontMetrics();
+            int textX = padding + diameter + 5; // Position text after the circle
+            int textY = (getHeight() + metrics.getAscent() - metrics.getDescent()) / 2;
+            g2.drawString(getText(), textX, textY);
+        }
+    }
+
+    static class CustomComboBox extends JComboBox<String> {
+
+        public CustomComboBox() {
+            super();
+
+            // Set a custom UI for the ComboBox
+            setUI(new CustomComboBoxUI());
+            setRenderer(new CustomComboBoxRenderer());
+
+            // Optional: Adjust the size
+            setPreferredSize(new Dimension(200, 30));
+        }
+
+
+        // Custom ComboBox UI for styling
+        private static class CustomComboBoxUI extends BasicComboBoxUI {
+            @Override
+            protected JButton createArrowButton() {
+                // Create a custom arrow button
+                JButton button = new JButton("▼");
+                button.setFont(new Font("Arial", Font.BOLD, 12));
+                button.setFocusPainted(false);
+                button.setBorderPainted(false);
+                button.setContentAreaFilled(false);
+                button.setForeground(new Color(100, 100, 100)); // Gray arrow color
+                return button;
+            }
+
+            @Override
+            public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(new Color(240, 240, 240)); // Light gray for the background
+                g2d.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 20, 20); // Rounded corners
+            }
+
+            @Override
+            protected void installDefaults() {
+                super.installDefaults();
+                comboBox.setOpaque(false);
+                comboBox.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1)); // Border color
+            }
+        }
+
+        // Custom Renderer for dropdown items
+        private static class CustomComboBoxRenderer extends BasicComboBoxRenderer {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setOpaque(true);
+
+                // Customize background and text color
+                if (isSelected) {
+                    label.setBackground(new Color(0, 119, 182)); // Blue for selection
+                    label.setForeground(Color.WHITE); // White text for selected item
+                } else {
+                    label.setBackground(Color.WHITE); // White background for unselected items
+                    label.setForeground(new Color(50, 50, 50)); // Dark gray text
+                }
+
+                // Optional: Padding for better spacing
+                label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                return label;
+            }
         }
     }
 }

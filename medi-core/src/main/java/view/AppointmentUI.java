@@ -9,6 +9,7 @@ import model.Email;
 import model.Patient;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ public class AppointmentUI {
     private JTextField textPatientEmail;
     private JTextField textFee;
     private JComboBox comboDoctor;
-    private JButton button1;
+    private JButton addAppointment;
     private JTextField textDate;
     private JTextField textTime;
 
@@ -63,7 +64,7 @@ public class AppointmentUI {
         appointmentControllerObj = new AppointmentController();
         patientControllerObj = new PatientController();
 
-        button1.addActionListener(new ActionListener() {
+        addAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String patientEmail = textPatientEmail.getText();
@@ -128,5 +129,32 @@ public class AppointmentUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300);
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        textPatientEmail = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textPatientEmail.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        comboDoctor = new CreateUIComponentDashboard.CustomComboBox();
+
+        textFee = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textFee.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        textDate = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textDate.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        textTime = new CreateUIComponentDashboard.RoundedJTextField(20);
+        textTime.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        addAppointment = new CreateUIComponentDashboard.CustomButton("Add Appointment");
+        addAppointment.setMinimumSize(new Dimension(200, 35));
+
+        ImageIcon addIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\heart.png");
+        Image iconImage = addIcon.getImage();
+        Image newAddIcon = iconImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        addIcon = new ImageIcon(newAddIcon);
+        addAppointment.setIcon(addIcon);
+
     }
 }
