@@ -9,8 +9,8 @@ public class InventoryController {
     Inventory ObjInventory;
     InventoryService ObjInventoryService;
 
-    public Inventory addInventoryToDB(int id, String medicine_name, int quantity, double price) {
-        ObjInventory = new Inventory(id, medicine_name, quantity, price);
+    public Inventory addInventoryToDB(int id, String medicine_name, int quantity, int threshold ,double price) {
+        ObjInventory = new Inventory(id, medicine_name, quantity,threshold ,price);
         return ObjInventory;
     }
 

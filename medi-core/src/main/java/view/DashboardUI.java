@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ public class DashboardUI {
     private JPanel sidePanel2;
     private JPanel sidepanel1;
     private JPanel logoutArea;
+    private JButton reportsButton;
 
     public DashboardUI() {
         CardLayout cardLayout = new CardLayout();
@@ -37,6 +39,7 @@ public class DashboardUI {
         doctorScheduleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ViewPanel.removeAll();
                 DoctorScheduleUI doctorScheduleUI = new DoctorScheduleUI();
                 ViewPanel.add(doctorScheduleUI.getPanel1(), "doctorScheduleUI");
                 cardLayout.show(ViewPanel, "doctorScheduleUI");
@@ -51,6 +54,16 @@ public class DashboardUI {
                 cardLayout.show(ViewPanel, "appointmentUI");
             }
         });
+
+        reportsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReportUI reportUI = new ReportUI();
+                ViewPanel.add(reportUI.getPanel1(), "reportUI");
+                cardLayout.show(ViewPanel, "reportUI");
+            }
+        });
+
         signoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,6 +73,7 @@ public class DashboardUI {
                 frame.revalidate();
             }
         });
+
     }
 
     public static void main(String[] args) {
@@ -112,10 +126,16 @@ public class DashboardUI {
         };
         patientsButton = new CreateUIComponent.CustomButton("Patients");
         patientsButton.setMinimumSize(new Dimension(0, 35));
+
         doctorScheduleButton = new CreateUIComponent.CustomButton("Doctor Schedule");
         doctorScheduleButton.setMinimumSize(new Dimension(0, 35));
+
         newAppointmentButton = new CreateUIComponent.CustomButton("New Appointment");
+        reportsButton = new CreateUIComponent.CustomButton("Reports");
+
+        reportsButton.setMinimumSize(new Dimension(0, 35));
         newAppointmentButton.setMinimumSize(new Dimension(0, 35));
+
         signoutButton = new CreateUIComponent.CustomButton("Sign Out");
 
         patientsButton.setFont(new Font("Arial", Font.PLAIN, 20));

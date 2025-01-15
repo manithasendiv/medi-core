@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PatientUI {
-    private JPanel panel1;
+    private JPanel BackPanel;
     private JTextField textName;
     private JTextField textEmail;
     private JTextField textContactNumber;
@@ -75,13 +75,13 @@ public class PatientUI {
     }
 
     public JPanel getPanel1() {
-        return panel1;
+        return BackPanel;
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("PatientUI");
         frame.setSize(300, 300);
-        frame.setContentPane(new PatientUI().panel1);
+        frame.setContentPane(new PatientUI().BackPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -100,7 +100,7 @@ public class PatientUI {
         textContactNumber = new CreateUIComponentDashboard.RoundedJTextField(20);
         textContactNumber.setFont(new Font("Arial", Font.PLAIN, 15));
 
-        textAddress = new CreateUIComponentDashboard.CustomTextArea(20, 20);
+        textAddress = new CreateUIComponentDashboard.CustomTextArea(1, 50);
 
         addPatientBtn = new CreateUIComponentDashboard.CustomButton("Add Patient");
         addPatientBtn.setPreferredSize(new Dimension(200, 35));

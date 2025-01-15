@@ -27,6 +27,7 @@ public class InventoryUI {
     private JTextField textQty;
     private JTextField textPrice;
     private JButton addItemButton;
+    private JTextField textThreshold;
 
     InventoryController inventoryController;
 
@@ -70,6 +71,24 @@ public class InventoryUI {
             }
         });
 
+        textThreshold.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(textThreshold.getText().equals("Threshold"))
+                {
+                    textThreshold.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(textThreshold.getText().isEmpty())
+                {
+                    textThreshold.setText("Threshold");
+                }
+            }
+        });
+
         textPrice.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -93,9 +112,10 @@ public class InventoryUI {
                 int mid = id + 1;
                 String name = textMedicine.getText();
                 String qty = textQty.getText();
+                String threshold = textThreshold.getText();
                 String price = textPrice.getText();
                 inventoryController = new InventoryController();
-                model.Inventory inventory = inventoryController.addInventoryToDB(0, name, Integer.parseInt(qty), Double.parseDouble(price));
+                model.Inventory inventory = inventoryController.addInventoryToDB(mid, name, Integer.parseInt(qty), Integer.parseInt(threshold), Double.parseDouble(price));
                 if(inventoryController.addInventoryToDB()){
                     JOptionPane.showMessageDialog(panel1, "Data added successfully");
                     updateInventoryTable();
@@ -104,6 +124,7 @@ public class InventoryUI {
                 }
                 textMedicine.setText("Medicine Name");
                 textQty.setText("Quantity");
+                textThreshold.setText("Threshold");
                 textPrice.setText("Price");
             }
         });
@@ -134,8 +155,8 @@ public class InventoryUI {
             DefaultTableModel model = (DefaultTableModel) Inventory.getModel();
             model.setRowCount(0);
 
-            model.addRow(new Object[]{"ID", "Medicine", "Quantity", "Price"});
-            model.addRow(new Object[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)});
+            model.addRow(new Object[]{"ID", "Medicine", "Quantity", "Threshold" ,"Price"});
+            model.addRow(new Object[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5)});
 
             while (resultSet.next()) {
                 Vector row = new Vector(columns);
@@ -181,8 +202,8 @@ public class InventoryUI {
         model.addColumn("ID");
         model.addColumn("Name");
         model.addColumn("Quantity");
+        model.addColumn("Threshold");
         model.addColumn("Price");
-
 
         class RoundedJTextField extends JTextField {
             private Shape shape;
@@ -216,5 +237,7 @@ public class InventoryUI {
         textPrice.setText("Price");
         textQty = new RoundedJTextField(20);
         textQty.setText("Quantity");
+        textThreshold = new RoundedJTextField(20);
+        textThreshold.setText("Threshold");
     }
 }

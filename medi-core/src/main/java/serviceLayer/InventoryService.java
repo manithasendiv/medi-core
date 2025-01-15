@@ -14,7 +14,7 @@ public class InventoryService {
 
     public boolean addInventory(Inventory inventory) {
         try {
-            String query = "INSERT INTO pharmacy_inventory(medicine_name, quantity, price) VALUES('"+inventory.getMedicine_name()+"','" +inventory.getQuantity()+ "','"+inventory.getPrice()+"')";
+            String query = "INSERT INTO pharmacy_inventory(medicine_name, quantity, threshold, price) VALUES('"+inventory.getMedicine_name()+"','" +inventory.getQuantity()+"','"+ inventory.getThreshold() +"','"+inventory.getPrice()+"')";
             boolean result = singleConnection.ExecuteSQL(query);
             return result;
         } catch (Exception e) {

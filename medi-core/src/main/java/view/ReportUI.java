@@ -198,6 +198,10 @@ public class ReportUI {
         });
     }
 
+    public JPanel getPanel1() {
+        return BackPanel;
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("ReportUI");
         frame.setContentPane(new ReportUI().BackPanel);
@@ -208,4 +212,15 @@ public class ReportUI {
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        appointmentReportButton = new CreateUIComponentDashboard.CustomButton("Appointment Report");
+        appointmentReportButton.setPreferredSize(new Dimension(50, 20));
+        patientReportButton = new CreateUIComponentDashboard.CustomButton("Patient Report");
+        patientReportButton.setPreferredSize(new Dimension(50, 20));
+        revenueReportButton = new CreateUIComponentDashboard.CustomButton("Revenue Report");
+        revenueReportButton.setPreferredSize(new Dimension(50, 20));
+        pharmacyInventoryButton = new CreateUIComponentDashboard.CustomButton("Pharmacy Inventory");
+        pharmacyInventoryButton.setPreferredSize(new Dimension(50, 20));
+    }
 }
