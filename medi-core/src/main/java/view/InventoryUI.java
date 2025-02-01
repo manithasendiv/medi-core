@@ -1,20 +1,19 @@
 package view;
 
 import controller.InventoryController;
+import controller.SupplierController;
+import model.Supplier;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
+import java.util.List;
 
 public class InventoryUI {
     private JPanel panel1;
@@ -28,84 +27,27 @@ public class InventoryUI {
     private JTextField textPrice;
     private JButton addItemButton;
     private JTextField textThreshold;
+    private JTextField textNewQuantity;
+    private JButton changeButton;
+    private JButton logoutButton;
+    private JTextField textmedicineID;
+    private JTextField textRemoveMedicine;
+    private JButton removeButton;
+    private JComboBox comboSupplierID;
+    private JButton manageSuppliersButton;
 
     InventoryController inventoryController;
+    SupplierController supplierController;
+
+    List<Supplier> supplierList;
 
     public InventoryUI() {
+
         int id = 0;
         updateInventoryTable();
-        textMedicine.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if(textMedicine.getText().equals("Medicine Name"))
-                {
-                    textMedicine.setText("");
-                }
-            }
-        });
-        textMedicine.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(textMedicine.getText().isEmpty())
-                {
-                    textMedicine.setText("Medicine Name");
-                }
-            }
-        });
+        updateSupplierComboBox();
 
-        textQty.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if(textQty.getText().equals("Quantity"))
-                {
-                    textQty.setText("");
-                }
-            }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(textQty.getText().isEmpty())
-                {
-                    textQty.setText("Quantity");
-                }
-            }
-        });
-
-        textThreshold.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if(textThreshold.getText().equals("Threshold"))
-                {
-                    textThreshold.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(textThreshold.getText().isEmpty())
-                {
-                    textThreshold.setText("Threshold");
-                }
-            }
-        });
-
-        textPrice.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if(textPrice.getText().equals("Price"))
-                {
-                    textPrice.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(textPrice.getText().isEmpty())
-                {
-                    textPrice.setText("Price");
-                }
-            }
-        });
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,18 +56,80 @@ public class InventoryUI {
                 String qty = textQty.getText();
                 String threshold = textThreshold.getText();
                 String price = textPrice.getText();
+                int index = comboSupplierID.getSelectedIndex();
+
+                if(name.isEmpty() || qty.isEmpty() || threshold.isEmpty() || price.isEmpty() || index == 0){
+                    JOptionPane.showMessageDialog(panel1, "Please fill all the fields");
+                } else {
+                    Supplier supplier = supplierList.get(index-1);
+                    inventoryController = new InventoryController();
+                    inventoryController.addInventoryToDB(mid, name, Integer.parseInt(qty), Integer.parseInt(threshold), Double.parseDouble(price), supplier.getSupplierId());
+
+                    if(inventoryController.addInventoryToDB()){
+                        JOptionPane.showMessageDialog(panel1, "Data added successfully");
+                        updateInventoryTable();
+                    } else {
+                        JOptionPane.showMessageDialog(panel1, "Error in adding data");
+                    }
+                }
+            }
+        });
+
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(textmedicineID.getText());
+                int quantity = Integer.parseInt(textNewQuantity.getText());
                 inventoryController = new InventoryController();
-                model.Inventory inventory = inventoryController.addInventoryToDB(mid, name, Integer.parseInt(qty), Integer.parseInt(threshold), Double.parseDouble(price));
-                if(inventoryController.addInventoryToDB()){
-                    JOptionPane.showMessageDialog(panel1, "Data added successfully");
+                if(inventoryController.removeQuantityFromInventory(id, quantity)){
+                    JOptionPane.showMessageDialog(panel1, "Data updated successfully");
                     updateInventoryTable();
                 } else {
-                    JOptionPane.showMessageDialog(panel1, "Error in adding data");
+                    JOptionPane.showMessageDialog(panel1, "Error in updating data");
                 }
-                textMedicine.setText("Medicine Name");
-                textQty.setText("Quantity");
-                textThreshold.setText("Threshold");
-                textPrice.setText("Price");
+            }
+        });
+
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(textRemoveMedicine.getText());
+                inventoryController = new InventoryController();
+                if(inventoryController.removeItem(id)){
+                    JOptionPane.showMessageDialog(panel1, "Data removed successfully");
+                    updateInventoryTable();
+                } else {
+                    JOptionPane.showMessageDialog(panel1, "Error in removing data");
+                }
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginUI loginUI = new LoginUI();
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(panel1);
+                frame.setContentPane(loginUI.getPanel1());
+                frame.revalidate();
+            }
+        });
+
+        manageSuppliersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("SupplierUI");
+                frame.setContentPane(new SupplierUI().getBackPanel());
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        updateSupplierComboBox();
+                    }
+                });
+                frame.setSize(800, 400);
+                frame.setVisible(true);
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
             }
         });
     }
@@ -150,13 +154,12 @@ public class InventoryUI {
             ResultSet resultSet = inventoryController.getInventoryDetails();
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columns = metaData.getColumnCount();
-            System.out.println(columns);
 
             DefaultTableModel model = (DefaultTableModel) Inventory.getModel();
             model.setRowCount(0);
 
-            model.addRow(new Object[]{"ID", "Medicine", "Quantity", "Threshold" ,"Price"});
-            model.addRow(new Object[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5)});
+            model.addRow(new Object[]{"ID","Supplier ID", "Medicine", "Quantity", "Threshold" ,"Price"});
+            model.addRow(new Object[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6)});
 
             while (resultSet.next()) {
                 Vector row = new Vector(columns);
@@ -172,11 +175,31 @@ public class InventoryUI {
         }
     }
 
+    public void updateSupplierComboBox(){
+        supplierController = new SupplierController();
+        supplierList = new ArrayList<>();
+
+        try{
+            ResultSet resultSet = supplierController.getSuppliers();
+            Supplier sup1 = new Supplier(resultSet.getInt("supplier_id"), resultSet.getString("name"), resultSet.getString("email"));
+            supplierList.add(sup1);
+
+            while (resultSet.next()) {
+                Supplier supplier = new Supplier(resultSet.getInt("supplier_id"), resultSet.getString("name"), resultSet.getString("email"));
+                supplierList.add(supplier);
+            }
+
+            for(int i = 0; i < supplierList.size(); i++) {
+                comboSupplierID.addItem(supplierList.get(i).getSupplier_name());
+            }
+
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(panel1, "Error in fetching supplier list");
+            throw new RuntimeException(e);
+        }
+    }
+
     private void createUIComponents() {
-        Border emptyBorder = BorderFactory.createLineBorder(Color.WHITE);
-        addItemButton = new JButton();
-        addItemButton.setBorder(emptyBorder);
-        addItemButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         HeaderContent = new JPanel();
         HeaderContent.setBackground(new Color(0, 0, 0, 0));
@@ -185,7 +208,7 @@ public class InventoryUI {
             protected void paintComponent(Graphics g) {
                 if (g instanceof Graphics2D) {
 
-                    Paint p = new GradientPaint(0.0f, 0.0f, new Color(0, 147, 255, 255), getWidth(), getHeight(), new Color(9, 64, 121,255 ), true);
+                    Paint p = new GradientPaint(0.0f, 0.0f, new Color(48, 203, 48, 255), getWidth(), getHeight(), new Color(148, 228, 148,255 ), true);
 
                     Graphics2D g2d = (Graphics2D)g;
                     g2d.setPaint(p);
@@ -200,44 +223,49 @@ public class InventoryUI {
         Inventory = new JTable(model);
 
         model.addColumn("ID");
+        model.addColumn("Supplier ID");
         model.addColumn("Name");
         model.addColumn("Quantity");
         model.addColumn("Threshold");
         model.addColumn("Price");
 
-        class RoundedJTextField extends JTextField {
-            private Shape shape;
-            public RoundedJTextField(int size) {
-                super(size);
-                setBounds(520, 284, 190, 25);
-                setBackground(new Color(0, 0, 0, 0));
-                setOpaque(false);
-                setMargin(new Insets(5, 20, 5, 20));
-            }
-            protected void paintComponent(Graphics g) {
-                g.setColor(new Color(0, 0, 0, 0));
-                g.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
-                super.paintComponent(g);
-            }
-            protected void paintBorder(Graphics g) {
-                g.setColor(new Color(165, 165, 165, 255));
-                g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
-            }
-            public boolean contains(int x, int y) {
-                if (shape == null || !shape.getBounds().equals(getBounds())) {
-                    shape = new RoundRectangle2D.Float(0, 0, getWidth()-1, getHeight()-1, 15, 15);
-                }
-                return shape.contains(x, y);
-            }
-        }
+        Inventory.setRowHeight(30);
+        Inventory.setShowGrid(true);
+        Inventory.setShowVerticalLines(false);
+        Inventory.setGridColor(new Color(0, 0, 0, 0));
+        Inventory.setIntercellSpacing(new Dimension(0, 0));
 
-        textMedicine = new RoundedJTextField(20);
-        textMedicine.setText("Medicine Name");
-        textPrice = new RoundedJTextField(20);
-        textPrice.setText("Price");
-        textQty = new RoundedJTextField(20);
-        textQty.setText("Quantity");
-        textThreshold = new RoundedJTextField(20);
-        textThreshold.setText("Threshold");
+
+        textMedicine = new CreateUIComponentDashboard.RoundedJTextField(10);
+        textQty = new CreateUIComponentDashboard.RoundedJTextField(10);
+        textThreshold = new CreateUIComponentDashboard.RoundedJTextField(10);
+        textPrice = new CreateUIComponentDashboard.RoundedJTextField(10);
+        textRemoveMedicine = new CreateUIComponentDashboard.RoundedJTextField(10);
+
+        comboSupplierID = new CreateUIComponentDashboard.CustomComboBox();
+
+        textmedicineID = new CreateUIComponentDashboard.RoundedJTextField(10);
+        textNewQuantity = new CreateUIComponentDashboard.RoundedJTextField(10);
+
+
+        addItemButton = new CreateUIComponentDashboard.CustomButton("Add Item");
+        addItemButton.setPreferredSize(new Dimension(150, 35));
+        changeButton = new CreateUIComponentDashboard.CustomButton("Change Quantity");
+        changeButton.setPreferredSize(new Dimension(150, 35));
+        removeButton = new CreateUIComponentDashboard.CustomButton("Remove Item");
+        removeButton.setPreferredSize(new Dimension(150, 35));
+        manageSuppliersButton = new CreateUIComponentDashboard.CustomButton("Manage Suppliers");
+        manageSuppliersButton.setPreferredSize(new Dimension(200, 35));
+
+
+
+        logoutButton = new CreateUIComponent.CustomButton("Sign Out");
+        logoutButton.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        ImageIcon signoutIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\exit.png");
+        Image signoutIconImage = signoutIcon.getImage();
+        Image newSignoutIcon = signoutIconImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        signoutIcon = new ImageIcon(newSignoutIcon);
+        logoutButton.setIcon(signoutIcon);
     }
 }

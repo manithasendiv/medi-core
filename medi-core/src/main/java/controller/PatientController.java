@@ -18,8 +18,8 @@ public class PatientController {
     }
 
     // method to add patient details to the object of model class
-    public Patient addPatient(int pid, String fullName, String email, String phone, String address) {
-        ObjPatient = new Patient(pid, fullName, email, phone, address);
+    public Patient addPatient(int pid, String fullName, String email, String gender, String phone, String address) {
+        ObjPatient = new Patient(pid, fullName, gender, email, phone, address);
         return ObjPatient;
     }
 

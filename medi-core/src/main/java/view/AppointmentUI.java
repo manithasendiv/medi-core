@@ -35,6 +35,7 @@ public class AppointmentUI {
 
     List<DoctorSchedule> doctorScheduleList;// list to store the doctor schedule list to set in the combo box later on
 
+
     public AppointmentUI() {
 
         // fetch doctor schedule list start and set them in the combo box
@@ -58,7 +59,6 @@ public class AppointmentUI {
             JOptionPane.showMessageDialog(null, "Error in fetching doctor schedule list");
             throw new RuntimeException(e);
         }
-        // fetch doctor schedule list end
 
         // initialize the controller objects to add the appointment to the database later on
         appointmentControllerObj = new AppointmentController();
@@ -77,14 +77,18 @@ public class AppointmentUI {
                     // get the patient object using email and add it to the appointment object and add the appointment to the database later on
                     int pid = patientResult.getInt("pid");
                     String fullName = patientResult.getString("fullname");
+                    String gender = patientResult.getString("gender");
                     String email = patientResult.getString("email");
                     String phone = patientResult.getString("contact");
                     String address = patientResult.getString("address");
 
-                    Patient patient = patientControllerObj.addPatient(pid, fullName, email, phone, address);
+                    Patient patient = patientControllerObj.addPatient(pid, fullName, gender, email, phone, address);
                     int index = comboDoctor.getSelectedIndex();
-                    DoctorSchedule doctorSchedule = doctorScheduleList.get(index);
+                    DoctorSchedule doctorSchedule = doctorScheduleList.get(index-1);
+
                     appointmentObj = appointmentControllerObj.addAppointment(1, patient, doctorSchedule , fee);
+
+
                     appointmentControllerObj.addAppointmentToDataBase();
                     JOptionPane.showMessageDialog(null, "Appointment added successfully");
                     textPatientEmail.setText("");
@@ -112,7 +116,7 @@ public class AppointmentUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = comboDoctor.getSelectedIndex();
-                DoctorSchedule doctorSchedule = doctorScheduleList.get(index);
+                DoctorSchedule doctorSchedule = doctorScheduleList.get(index-1);
                 textDate.setText(doctorSchedule.getDate());
                 textTime.setText(doctorSchedule.getTime());
             }

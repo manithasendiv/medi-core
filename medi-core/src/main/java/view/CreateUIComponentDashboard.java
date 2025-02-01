@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -170,77 +171,30 @@ public class CreateUIComponentDashboard {
         }
     }
 
-//    static class CustomTextArea extends JTextArea {
-//        private Shape shape;
-//        private String placeholder = "";
-//
-//        public CustomTextArea(int rows, int columns) {
-//            super(rows, columns);
-//            setOpaque(false);  // Make the background transparent
-//            setMargin(new Insets(10, 15, 10, 15));  // Add padding
-//            setFont(new Font("Arial", Font.PLAIN, 14));  // Set font style
-//            setLineWrap(true);  // Enable text wrapping
-//            setWrapStyleWord(true);  // Wrap at word boundaries
-//        }
-//
-//        @Override
-//        protected void paintComponent(Graphics g) {
-//            Graphics2D g2 = (Graphics2D) g.create();
-//
-//            // Enable anti-aliasing for smooth rendering
-//            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//            // Draw the background
-//            g2.setColor(new Color(240, 240, 240));  // Light gray background
-//            g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
-//
-//            // Draw placeholder text if the area is empty
-//            if (getText().isEmpty() && !isFocusOwner() && placeholder != null) {
-//                g2.setColor(Color.GRAY);  // Placeholder text color
-//                g2.setFont(getFont());
-//                g2.drawString(placeholder, getInsets().left, getFontMetrics(getFont()).getHeight());
-//            }
-//
-//            super.paintComponent(g);
-//            g2.dispose();
-//        }
-//
-//        @Override
-//        protected void paintBorder(Graphics g) {
-//            Graphics2D g2 = (Graphics2D) g.create();
-//
-//            // Enable anti-aliasing for smooth rendering
-//            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//            // Draw the border
-//            g2.setColor(Color.DARK_GRAY);  // Border color
-//            g2.setStroke(new BasicStroke(1));  // Border thickness
-//            g2.drawRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 20, 20);
-//
-//            g2.dispose();
-//        }
-//
-//        @Override
-//        public boolean contains(int x, int y) {
-//            if (shape == null || !shape.getBounds().equals(getBounds())) {
-//                shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
-//            }
-//            return shape.contains(x, y);
-//        }
-//
-//        // Method to set placeholder text
-//        public void setPlaceholder(String placeholder) {
-//            this.placeholder = placeholder;
-//            repaint();  // Redraw the component
-//        }
-//
-//        // Method to get placeholder text
-//        public String getPlaceholder() {
-//            return this.placeholder;
-//        }
-//    }
+    static class CustomTableCellRenderer extends DefaultTableCellRenderer {
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        // Get the default component
+        Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-    public static class CustomTextArea extends JTextArea {
+        if (row % 2 == 0) {
+            cellComponent.setBackground(new Color(220, 240, 255));
+        } else {
+            cellComponent.setBackground(Color.WHITE);
+        }
+
+        // Highlight selected row
+        if (isSelected) {
+            cellComponent.setBackground(new Color(142, 210, 119));
+            cellComponent.setForeground(Color.WHITE);
+        } else {
+            cellComponent.setForeground(Color.BLACK);
+        }
+
+        return cellComponent;
+    }
+}
+
+    static class CustomTextArea extends JTextArea {
         public CustomTextArea(int rows, int columns) {
             super(rows, columns);
 
@@ -282,8 +236,6 @@ public class CreateUIComponentDashboard {
             g2.dispose();
         }
     }
-
-
 
     static class CustomRadioButton extends JRadioButton {
         private Color baseColor = new Color(236, 236, 236, 255);

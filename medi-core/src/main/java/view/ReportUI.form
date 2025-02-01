@@ -99,7 +99,8 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Total: "/>
+                  <font size="18"/>
+                  <text value="Total:"/>
                 </properties>
               </component>
               <hspacer id="1628">
@@ -112,7 +113,8 @@
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font size="18"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="715e5" class="javax.swing.JLabel" binding="countLabel">
@@ -120,7 +122,8 @@
                   <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font size="18"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="fd3b7" class="javax.swing.JLabel">
@@ -128,7 +131,8 @@
                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Count"/>
+                  <font size="18"/>
+                  <text value="Count:"/>
                 </properties>
               </component>
               <hspacer id="e3cd9">

@@ -36,5 +36,27 @@ public class DoctorScheduleService {
             return null;
         }
     }
+
+    public boolean updateDoctorSchedule(DoctorSchedule doctorSchedule) {
+        try {
+            String query = "UPDATE doctor_schedule SET doctorName = '"+doctorSchedule.getDoctorName()+"', doctorSpecialization = '"+doctorSchedule.getDoctorSpecialization()+"', date = '"+doctorSchedule.getDate()+"', time = '"+doctorSchedule.getTime()+"' WHERE did = "+doctorSchedule.getDoctorID();
+            boolean result = singleConnection.ExecuteSQL(query);
+            return result;
+        } catch (Exception e) {
+            System.out.println("Error in updating doctor schedule" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean removeDoctorSchedule(int sid) {
+        try {
+            String query = "DELETE FROM doctor_schedule WHERE date < CURDATE();";
+            boolean result = singleConnection.ExecuteSQL(query);
+            return result;
+        } catch (Exception e) {
+            System.out.println("Error in deleting doctor schedule" + e.getMessage());
+            return false;
+        }
+    }
 }
 

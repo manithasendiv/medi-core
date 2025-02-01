@@ -60,6 +60,17 @@ public class ReportService {
         return result;
     }
 
+    public ResultSet medicineCountDB() {
+        try {
+            singleConnection.setPreparedStatement("SELECT COUNT(*) AS medicine_count FROM pharmacy_inventory WHERE MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW());");
+            result = singleConnection.ExecutePreparedStatement();
+            return result;
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+
     public ResultSet revenueFromAppointmentsDB() {
         try {
             singleConnection.setPreparedStatement("SELECT SUM(fee) AS revenue FROM appointment WHERE MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW());");
@@ -84,7 +95,7 @@ public class ReportService {
 
     public ResultSet costOfInventoryDB() {
         try {
-            singleConnection.setPreparedStatement("SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(quantity * price) AS total_amount FROM pharmacy_inventory GROUP BY DATE_FORMAT(date, '%Y-%m');");
+            singleConnection.setPreparedStatement("SELECT SUM(quantity * price) AS total_inventory_value FROM pharmacy_inventory WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())");
             result = singleConnection.ExecutePreparedStatement();
             return result;
         } catch (Exception ex) {

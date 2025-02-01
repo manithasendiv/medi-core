@@ -6,7 +6,7 @@ import serviceLayer.DoctorScheduleService;
 import java.sql.ResultSet;
 
 public class DoctorScheduleController {
-    DoctorSchedule ObjDoctorSchedule;
+    public DoctorSchedule ObjDoctorSchedule;
     DoctorScheduleService ObjDoctorScheduleService;
 
     public DoctorScheduleController(){
@@ -25,6 +25,14 @@ public class DoctorScheduleController {
     public ResultSet getAllSchedule() {
         ResultSet result = ObjDoctorScheduleService.getAllSchedule();
         return result;
+    }
+
+    public boolean removeDoctorSchedule(int sid) {
+        return ObjDoctorScheduleService.removeDoctorSchedule(sid);
+    }
+
+    public boolean updateDoctorSchedule(DoctorSchedule doctorSchedule) {
+        return ObjDoctorScheduleService.updateDoctorSchedule(doctorSchedule);
     }
 
 }

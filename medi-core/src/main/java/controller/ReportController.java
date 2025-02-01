@@ -31,6 +31,11 @@ public class ReportController {
         return resultSet;
     }
 
+    public ResultSet medicineCount(){
+        ResultSet resultSet = reportService.medicineCountDB();
+        return resultSet;
+    }
+
     public ResultSet appointmentRevenue() {
         ResultSet resultSet = reportService.revenueFromAppointmentsDB();
         return resultSet;

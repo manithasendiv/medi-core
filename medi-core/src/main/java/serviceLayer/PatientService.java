@@ -18,7 +18,7 @@ public class PatientService {
     public boolean addPatient(Patient patient) {
         try{
             // SQL query to insert patient details into the database table patients
-            String query = "INSERT INTO patients(fullname, email, contact, address) VALUES('"+patient.getFullName()+"','" +patient.getEmail()+ "','"+patient.getPhone()+"','"+patient.getAddress()+"')";
+            String query = "INSERT INTO patients(fullname, gender, email, contact, address) VALUES('"+patient.getFullName()+ "','"+ patient.getGender() +"','" +patient.getEmail()+ "','"+patient.getPhone()+"','"+patient.getAddress()+"')";
             boolean result = singleConnection.ExecuteSQL(query); // ExecuteSQL method is called to execute the SQL query
             return result; // return the result of the query execution
         }

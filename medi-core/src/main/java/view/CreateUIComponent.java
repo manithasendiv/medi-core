@@ -50,21 +50,14 @@ public class CreateUIComponent {
 
             // Draw rounded rectangle border
             g2.drawRoundRect(
-                    (int) (borderWidth / 2),
-                    (int) (borderWidth / 2),
+                    0,
+                    0,
                     getWidth() - (int) borderWidth,
                     getHeight() - (int) borderWidth,
                     40, 40
             );
 
             g2.dispose();
-        }
-
-        public boolean contains(int x, int y) {
-            if (shape == null || !shape.getBounds().equals(getBounds())) {
-                shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 40, 40);
-            }
-            return shape.contains(x, y);
         }
     }
 
@@ -108,21 +101,14 @@ public class CreateUIComponent {
 
             // Draw rounded rectangle border
             g2.drawRoundRect(
-                    (int) (borderWidth / 2),
-                    (int) (borderWidth / 2),
+                    0,
+                    0,
                     getWidth() - (int) borderWidth,
                     getHeight() - (int) borderWidth,
                     40, 40
             );
 
             g2.dispose();
-        }
-
-        public boolean contains(int x, int y) {
-            if (shape == null || !shape.getBounds().equals(getBounds())) {
-                shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 40, 40);
-            }
-            return shape.contains(x, y);
         }
     }
 
@@ -216,13 +202,6 @@ public class CreateUIComponent {
             // Set text color and font
             g2d.setColor(new Color(0, 0, 0));  // Black text
             g2d.setFont(new Font("Arial", Font.BOLD, 15));  // Set font
-            FontMetrics metrics = g2d.getFontMetrics();
-
-            // Calculate text position
-            int x = (getWidth() - metrics.stringWidth(getText())) / 2;
-            int y = (getHeight() + metrics.getAscent()) / 2;
-
-
             super.paintComponent(g);
         }
     }

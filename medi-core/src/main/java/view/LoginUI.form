@@ -30,7 +30,7 @@
           </grid>
         </constraints>
         <properties>
-          <font name="Bookshelf Symbol 7" style="1"/>
+          <font name="JetBrains Mono ExtraLight" style="1"/>
         </properties>
       </component>
       <component id="8401" class="javax.swing.JButton" binding="loginButton" custom-create="true">

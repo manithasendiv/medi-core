@@ -1,14 +1,13 @@
 package view;
 
 import controller.DoctorScheduleController;
-import model.DoctorSchedule;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 public class DoctorScheduleUI {
     private JPanel BackPanel;
@@ -17,10 +16,24 @@ public class DoctorScheduleUI {
     private JTextField textDate;
     private JTextField textTime;
     private JButton addScheduleButton;
+    private JTable scheduleTable;
+    private JButton updateScheduleButton;
+    private JButton removeOldSchedulesButton;
+    private int selectedRow = -1;
 
     DoctorScheduleController ObjDoctorScheduleController;
 
     public DoctorScheduleUI(){
+        scheduleTable.setDefaultRenderer(Object.class, new CreateUIComponentDashboard.CustomTableCellRenderer());
+        scheduleTable.setRowHeight(30);
+        scheduleTable.setPreferredSize(new Dimension(700, 50));
+        scheduleTable.setMinimumSize(new Dimension(700, 50));
+        scheduleTable.setMaximumSize(new Dimension(700, 50));
+        scheduleTable.setShowVerticalLines(false);
+        scheduleTable.setFont(new Font("Arial", Font.PLAIN, 12));
+        scheduleTable.setGridColor(Color.WHITE);
+
+        updateScheduleTable();
         ObjDoctorScheduleController = new DoctorScheduleController();
         int scheduleCount = 0;
 
@@ -41,6 +54,7 @@ public class DoctorScheduleUI {
                     return;
                 }
                 JOptionPane.showMessageDialog(null, "Schedule added successfully!");
+                updateScheduleTable();
 
                 textDoctorName.setText("");
                 textDoctorSpecialization.setText("");
@@ -85,6 +99,63 @@ public class DoctorScheduleUI {
                 }
             }
         });
+        scheduleTable.addComponentListener(new ComponentAdapter() {
+        });
+        scheduleTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = scheduleTable.getSelectedRow();
+                if(row >= 0){
+                    selectedRow =  Integer.parseInt(scheduleTable.getModel().getValueAt(row, 0).toString());
+                    textDoctorName.setText(scheduleTable.getModel().getValueAt(row, 1).toString());
+                    textDoctorSpecialization.setText(scheduleTable.getModel().getValueAt(row, 2).toString());
+                    textDate.setText(scheduleTable.getModel().getValueAt(row, 3).toString());
+                    textTime.setText(scheduleTable.getModel().getValueAt(row, 4).toString());
+                }
+            }
+        });
+        updateScheduleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(selectedRow >= 0){
+                    int sid = selectedRow;
+                    String doctorName = textDoctorName.getText();
+                    String doctorSpecialization = textDoctorSpecialization.getText();
+                    String date = textDate.getText();
+                    String time = textTime.getText();
+
+                    ObjDoctorScheduleController.addDoctorSchedule(sid, doctorName, doctorSpecialization, date, time);
+
+                    if (!ObjDoctorScheduleController.updateDoctorSchedule(ObjDoctorScheduleController.ObjDoctorSchedule)) {
+                        JOptionPane.showMessageDialog(null, "Error in updating schedule");
+                        return;
+                    }
+                    JOptionPane.showMessageDialog(null, "Schedule updated successfully!");
+
+                    updateScheduleTable();
+                    textDoctorName.setText("");
+                    textDoctorSpecialization.setText("");
+                    textDate.setText("");
+                    textTime.setText("");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Please select a schedule to update");
+                }
+            }
+        });
+        removeOldSchedulesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(ObjDoctorScheduleController.removeDoctorSchedule(selectedRow)){
+                    JOptionPane.showMessageDialog(null, "Old schedules removed successfully!");
+                    updateScheduleTable();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Error in removing old schedules");
+                }
+            }
+        });
     }
 
     public JPanel getPanel1(){
@@ -97,6 +168,33 @@ public class DoctorScheduleUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300);
         frame.setVisible(true);
+    }
+
+    public void updateScheduleTable(){
+        ObjDoctorScheduleController = new DoctorScheduleController();
+        try{
+            ResultSet resultSet = ObjDoctorScheduleController.getAllSchedule();
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            DefaultTableModel model = (DefaultTableModel) scheduleTable.getModel();
+            model.setRowCount(0);
+
+            model.setColumnIdentifiers(new Object[]{"SID", "Doctor Name", "Doctor Specialization", "Date", "Time"});
+            model.addRow(new Object[]{"SID", "Doctor Name", "Doctor Specialization", "Date", "Time"});
+            model.addRow(new Object[]{resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5)});
+
+            while(resultSet.next()){
+                Object[] row = new Object[columnCount];
+                for(int i = 1; i <= columnCount; i++){
+                    row[i-1] = resultSet.getObject(i);
+                }
+                model.addRow(row);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error in updating schedule table" + e.getMessage());
+        }
     }
 
     private void createUIComponents() {
@@ -116,6 +214,10 @@ public class DoctorScheduleUI {
 
         addScheduleButton = new CreateUIComponentDashboard.CustomButton("Add Schedule");
         addScheduleButton.setMinimumSize(new Dimension(200, 35));
+        updateScheduleButton = new CreateUIComponentDashboard.CustomButton("Update Schedule");
+        updateScheduleButton.setMinimumSize(new Dimension(200, 35));
+        removeOldSchedulesButton = new CreateUIComponentDashboard.CustomButton("Remove Old Schedules");
+        removeOldSchedulesButton.setMinimumSize(new Dimension(250, 35));
 
         ImageIcon addIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\heart.png");
         Image iconImage = addIcon.getImage();

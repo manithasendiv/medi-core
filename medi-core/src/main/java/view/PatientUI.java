@@ -43,15 +43,20 @@ public class PatientUI {
                 String contactNumber = textContactNumber.getText();
                 String address = textAddress.getText();
 
-                // add patient details to the object of model class using controller class
-                objController.addPatient(pid, name, email, contactNumber, address);
-
-                // add patient details to the database using controller class
-                if (!objController.addPatientToDataBase()) {
-                    JOptionPane.showMessageDialog(null, "Error in adding patient");
-                    return;
+                if (name.isEmpty() || email.isEmpty() || contactNumber.isEmpty() || address.isEmpty() || gender.isEmpty()) {
+                    JOptionPane.showMessageDialog(BackPanel, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null, "Patient added successfully!");
+                else{
+                    // add patient details to the object of model class using controller class
+                    objController.addPatient(pid, name, gender, email, contactNumber, address);
+
+                    // add patient details to the database using controller class
+                    if (!objController.addPatientToDataBase()) {
+                        JOptionPane.showMessageDialog(null, "Error in adding patient");
+                        return;
+                    }
+                    JOptionPane.showMessageDialog(null, "Patient added successfully!");
+                }
 
                 // clear the text fields after adding patient details
                 textName.setText("");

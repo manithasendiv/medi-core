@@ -5,7 +5,6 @@ public class Appointment {
     private Patient patient;
     private DoctorSchedule doctorSchedule;
     private Double fee;
-    private String patientName;
 
     public Appointment(int appointmentId, Patient patient, DoctorSchedule doctorSchedule, Double fee) {
         this.appointmentId = appointmentId;
