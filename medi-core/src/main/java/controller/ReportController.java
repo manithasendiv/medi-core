@@ -12,43 +12,35 @@ public class ReportController {
     }
 
     public ResultSet findPatientDetails() {
-        ResultSet resultSet = reportService.findPatientDetailsDB();
-        return resultSet;
+        return reportService.findPatientDetailsDB();
     }
 
     public ResultSet patientCount() {
-        ResultSet resultSet = reportService.patientCountDB();
-        return resultSet;
+        return reportService.patientCountDB();
     }
 
     public ResultSet findAppointmentDetails() {
-        ResultSet resultSet = reportService.findAppointmentDetailsDB();
-        return resultSet;
+        return reportService.findAppointmentDetailsDB();
     }
 
     public ResultSet appointmentCount() {
-        ResultSet resultSet = reportService.appointmentCountDB();
-        return resultSet;
+        return reportService.appointmentCountDB();
     }
 
     public ResultSet medicineCount(){
-        ResultSet resultSet = reportService.medicineCountDB();
-        return resultSet;
+        return reportService.medicineCountDB();
     }
 
     public ResultSet appointmentRevenue() {
-        ResultSet resultSet = reportService.revenueFromAppointmentsDB();
-        return resultSet;
+        return reportService.revenueFromAppointmentsDB();
     }
 
     public ResultSet findInventoryDetails() {
-        ResultSet resultSet = reportService.findInventoryDetailsDB();
-        return resultSet;
+        return reportService.findInventoryDetailsDB();
     }
 
     public ResultSet costForInventory() {
-        ResultSet resultSet = reportService.costOfInventoryDB();
-        return resultSet;
+        return reportService.costOfInventoryDB();
     }
 
 }

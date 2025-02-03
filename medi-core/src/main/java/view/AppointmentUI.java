@@ -25,20 +25,16 @@ public class AppointmentUI {
     private JTextField textDate;
     private JTextField textTime;
 
-    // class members
-    Appointment appointmentObj; // appointment object to store the appointment details to be added to the database later on
+    Appointment appointmentObj;
 
-    // controller definitions
-    AppointmentController appointmentControllerObj; // appointment controller object to add the appointment to the database later on
-    PatientController patientControllerObj; // patient controller object to get the patient object using email to add to the appointment object later on
-    DoctorScheduleController doctorScheduleControllerObj; // doctor schedule controller object to get the doctor schedule list to set in the combo box later on
+    AppointmentController appointmentControllerObj;
+    PatientController patientControllerObj;
+    DoctorScheduleController doctorScheduleControllerObj;
 
-    List<DoctorSchedule> doctorScheduleList;// list to store the doctor schedule list to set in the combo box later on
+    List<DoctorSchedule> doctorScheduleList;
 
 
     public AppointmentUI() {
-
-        // fetch doctor schedule list start and set them in the combo box
         doctorScheduleControllerObj = new DoctorScheduleController();
         doctorScheduleList = new ArrayList<>();
         try {
@@ -60,7 +56,6 @@ public class AppointmentUI {
             throw new RuntimeException(e);
         }
 
-        // initialize the controller objects to add the appointment to the database later on
         appointmentControllerObj = new AppointmentController();
         patientControllerObj = new PatientController();
 
@@ -70,35 +65,30 @@ public class AppointmentUI {
                 String patientEmail = textPatientEmail.getText();
                 Double fee = Double.parseDouble(textFee.getText());
 
-                // get the patient object using email and add it to the appointment object and add the appointment to the database later on
                 ResultSet patientResult = patientControllerObj.getPatientByEmail(patientEmail);
 
                 try {
-                    // get the patient object using email and add it to the appointment object and add the appointment to the database later on
                     int pid = patientResult.getInt("pid");
                     String fullName = patientResult.getString("fullname");
                     String gender = patientResult.getString("gender");
                     String email = patientResult.getString("email");
                     String phone = patientResult.getString("contact");
                     String address = patientResult.getString("address");
+                    int index = comboDoctor.getSelectedIndex();
 
                     Patient patient = patientControllerObj.addPatient(pid, fullName, gender, email, phone, address);
-                    int index = comboDoctor.getSelectedIndex();
                     DoctorSchedule doctorSchedule = doctorScheduleList.get(index-1);
 
                     appointmentObj = appointmentControllerObj.addAppointment(1, patient, doctorSchedule , fee);
-
-
-                    appointmentControllerObj.addAppointmentToDataBase();
+                    if (!appointmentControllerObj.addAppointmentToDataBase()) {
+                        JOptionPane.showMessageDialog(null, "Error in adding appointment");
+                    }
                     JOptionPane.showMessageDialog(null, "Appointment added successfully");
-                    textPatientEmail.setText("");
-                    textFee.setText("");
-                    textDate.setText("");
-                    textTime.setText("");
 
                     try{
                         Email emailObj = new Email();
                         emailObj.sendEmail(patient.getEmail(), "Appointment Confirmation", "Your appointment has been confirmed with " + doctorSchedule.getDoctorName() + " on " + doctorSchedule.getDate() + " at " + doctorSchedule.getTime() + ". Please be on time.");
+                        JOptionPane.showMessageDialog(null, "Appointment Remainder Send to: " + patient.getEmail());
                     }
                     catch (Exception ex)
                     {
@@ -110,6 +100,12 @@ public class AppointmentUI {
                     JOptionPane.showMessageDialog(null, "Error in adding appointment");
                     throw new RuntimeException(ex);
                 }
+
+                textPatientEmail.setText("");
+                textFee.setText("");
+                textDate.setText("");
+                textTime.setText("");
+                comboDoctor.setSelectedIndex(0);
             }
         });
         comboDoctor.addActionListener(new ActionListener() {
@@ -123,7 +119,7 @@ public class AppointmentUI {
         });
     }
 
-    public JPanel getPanel1() {
+    public JPanel getAppointmentUI() {
         return BackPanel;
     }
 

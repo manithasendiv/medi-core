@@ -15,8 +15,7 @@ public class DoctorScheduleService {
     public boolean addDoctorSchedule(DoctorSchedule doctorSchedule) {
         try{
             String query = "INSERT INTO doctor_schedule(doctorName, doctorSpecialization, date, time) VALUES('"+doctorSchedule.getDoctorName()+"','"+doctorSchedule.getDoctorSpecialization()+"','"+doctorSchedule.getDate()+"','"+doctorSchedule.getTime()+"')";
-            boolean result = singleConnection.ExecuteSQL(query);
-            return result;
+            return singleConnection.ExecuteSQL(query);
         }
         catch(Exception e) {
             System.out.println("Error in adding doctor schedule" + e.getMessage());
@@ -28,8 +27,7 @@ public class DoctorScheduleService {
         try {
             String query = "SELECT * FROM doctor_schedule";
             singleConnection.setPreparedStatement(query);
-            ResultSet result = singleConnection.ExecutePreparedStatement();
-            return result;
+            return singleConnection.ExecutePreparedStatement();
 
         } catch (Exception e) {
             System.out.println("Error in getting all schedule" + e.getMessage());
@@ -40,8 +38,7 @@ public class DoctorScheduleService {
     public boolean updateDoctorSchedule(DoctorSchedule doctorSchedule) {
         try {
             String query = "UPDATE doctor_schedule SET doctorName = '"+doctorSchedule.getDoctorName()+"', doctorSpecialization = '"+doctorSchedule.getDoctorSpecialization()+"', date = '"+doctorSchedule.getDate()+"', time = '"+doctorSchedule.getTime()+"' WHERE did = "+doctorSchedule.getDoctorID();
-            boolean result = singleConnection.ExecuteSQL(query);
-            return result;
+            return singleConnection.ExecuteSQL(query);
         } catch (Exception e) {
             System.out.println("Error in updating doctor schedule" + e.getMessage());
             return false;
@@ -51,8 +48,7 @@ public class DoctorScheduleService {
     public boolean removeDoctorSchedule(int sid) {
         try {
             String query = "DELETE FROM doctor_schedule WHERE date < CURDATE();";
-            boolean result = singleConnection.ExecuteSQL(query);
-            return result;
+            return singleConnection.ExecuteSQL(query);
         } catch (Exception e) {
             System.out.println("Error in deleting doctor schedule" + e.getMessage());
             return false;

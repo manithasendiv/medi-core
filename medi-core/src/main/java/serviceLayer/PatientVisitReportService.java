@@ -15,8 +15,7 @@ public class PatientVisitReportService {
         try{
             String query = "SELECT * FROM patients";
             singleConnection.setPreparedStatement(query);
-            ResultSet result = singleConnection.ExecutePreparedStatement();
-            return result;
+            return singleConnection.ExecutePreparedStatement();
         }
         catch(Exception e){
             System.out.println("Error in getting patient records" + e.getMessage());

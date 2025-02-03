@@ -24,15 +24,6 @@ public class ReportUI {
     ReportController reportController;
     
     public ReportUI(){
-        table1.setRowHeight(30);
-        table1.setPreferredSize(new Dimension(700, 50));
-        table1.setMinimumSize(new Dimension(700, 50));
-        table1.setMaximumSize(new Dimension(700, 50));
-        table1.setShowVerticalLines(false);
-        table1.setFont(new Font("Arial", Font.PLAIN, 12));
-        table1.setGridColor(Color.WHITE);
-        table1.setDefaultRenderer(Object.class, new CreateUIComponentDashboard.CustomTableCellRenderer());
-
         patientReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -214,9 +205,18 @@ public class ReportUI {
                 }
             }
         });
+
+        table1.setRowHeight(30);
+        table1.setPreferredSize(new Dimension(700, 50));
+        table1.setMinimumSize(new Dimension(700, 50));
+        table1.setMaximumSize(new Dimension(700, 50));
+        table1.setShowVerticalLines(false);
+        table1.setFont(new Font("Arial", Font.PLAIN, 12));
+        table1.setGridColor(Color.WHITE);
+        table1.setDefaultRenderer(Object.class, new CreateUIComponentDashboard.CustomTableCellRenderer());
     }
 
-    public JPanel getPanel1() {
+    public JPanel getReportUI() {
         return BackPanel;
     }
 
@@ -232,6 +232,7 @@ public class ReportUI {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+
         appointmentReportButton = new CreateUIComponentDashboard.CustomButton("Appointment Report");
         appointmentReportButton.setPreferredSize(new Dimension(50, 50));
 

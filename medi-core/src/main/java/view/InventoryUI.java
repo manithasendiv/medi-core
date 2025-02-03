@@ -66,12 +66,18 @@ public class InventoryUI {
                     inventoryController.addInventoryToDB(mid, name, Integer.parseInt(qty), Integer.parseInt(threshold), Double.parseDouble(price), supplier.getSupplierId());
 
                     if(inventoryController.addInventoryToDB()){
-                        JOptionPane.showMessageDialog(panel1, "Data added successfully");
+                        JOptionPane.showMessageDialog(panel1, "Item added successfully");
                         updateInventoryTable();
                     } else {
-                        JOptionPane.showMessageDialog(panel1, "Error in adding data");
+                        JOptionPane.showMessageDialog(panel1, "Error in adding Item");
                     }
                 }
+
+                textMedicine.setText("");
+                textQty.setText("");
+                textThreshold.setText("");
+                textPrice.setText("");
+                comboSupplierID.setSelectedIndex(0);
             }
         });
 
@@ -82,11 +88,14 @@ public class InventoryUI {
                 int quantity = Integer.parseInt(textNewQuantity.getText());
                 inventoryController = new InventoryController();
                 if(inventoryController.removeQuantityFromInventory(id, quantity)){
-                    JOptionPane.showMessageDialog(panel1, "Data updated successfully");
+                    JOptionPane.showMessageDialog(panel1, "Item updated successfully");
                     updateInventoryTable();
                 } else {
-                    JOptionPane.showMessageDialog(panel1, "Error in updating data");
+                    JOptionPane.showMessageDialog(panel1, "Error in updating Item");
                 }
+
+                textmedicineID.setText("");
+                textNewQuantity.setText("");
             }
         });
 
@@ -96,11 +105,13 @@ public class InventoryUI {
                 int id = Integer.parseInt(textRemoveMedicine.getText());
                 inventoryController = new InventoryController();
                 if(inventoryController.removeItem(id)){
-                    JOptionPane.showMessageDialog(panel1, "Data removed successfully");
+                    JOptionPane.showMessageDialog(panel1, "Item removed successfully");
                     updateInventoryTable();
                 } else {
-                    JOptionPane.showMessageDialog(panel1, "Error in removing data");
+                    JOptionPane.showMessageDialog(panel1, "Error in removing Item");
                 }
+
+                textRemoveMedicine.setText("");
             }
         });
 
@@ -109,7 +120,7 @@ public class InventoryUI {
             public void actionPerformed(ActionEvent e) {
                 LoginUI loginUI = new LoginUI();
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(panel1);
-                frame.setContentPane(loginUI.getPanel1());
+                frame.setContentPane(loginUI.getLoginUI());
                 frame.revalidate();
             }
         });
@@ -118,7 +129,7 @@ public class InventoryUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame("SupplierUI");
-                frame.setContentPane(new SupplierUI().getBackPanel());
+                frame.setContentPane(new SupplierUI().getSupplierUI());
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.addWindowListener(new WindowAdapter() {
                     @Override
@@ -189,6 +200,8 @@ public class InventoryUI {
                 supplierList.add(supplier);
             }
 
+            comboSupplierID.removeAllItems();
+            comboSupplierID.addItem("---Select Supplier---");
             for(int i = 0; i < supplierList.size(); i++) {
                 comboSupplierID.addItem(supplierList.get(i).getSupplier_name());
             }
@@ -261,6 +274,30 @@ public class InventoryUI {
 
         logoutButton = new CreateUIComponent.CustomButton("Sign Out");
         logoutButton.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        ImageIcon addItem = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\add.png");
+        Image addItemImage = addItem.getImage();
+        Image newAddItem = addItemImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        addItem = new ImageIcon(newAddItem);
+        addItemButton.setIcon(addItem);
+
+        ImageIcon changeItem = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\updated.png");
+        Image changeItemImage = changeItem.getImage();
+        Image newChangeItem = changeItemImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        changeItem = new ImageIcon(newChangeItem);
+        changeButton.setIcon(changeItem);
+
+        ImageIcon removeItem = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\remove.png");
+        Image removeItemImage = removeItem.getImage();
+        Image newRemoveItem = removeItemImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        removeItem = new ImageIcon(newRemoveItem);
+        removeButton.setIcon(removeItem);
+
+        ImageIcon manageSuppliers = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\manage.png");
+        Image manageSuppliersImage = manageSuppliers.getImage();
+        Image newManageSuppliers = manageSuppliersImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        manageSuppliers = new ImageIcon(newManageSuppliers);
+        manageSuppliersButton.setIcon(manageSuppliers);
 
         ImageIcon signoutIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\exit.png");
         Image signoutIconImage = signoutIcon.getImage();

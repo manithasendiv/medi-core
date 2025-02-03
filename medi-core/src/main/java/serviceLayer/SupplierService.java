@@ -15,8 +15,7 @@ public class SupplierService {
     public boolean addSupplier(Supplier supplier) {
         try{
             String query = "INSERT INTO supplier(name, email) VALUES('"+supplier.getSupplier_name()+"','"+supplier.getSupplier_email()+"')";
-            boolean result = singleConnection.ExecuteSQL(query);
-            return result;
+            return singleConnection.ExecuteSQL(query);
         }
         catch(Exception e) {
             System.out.println("Error in adding supplier" + e.getMessage());
@@ -27,8 +26,7 @@ public class SupplierService {
     public boolean removeSupplier(int id) {
         try{
             String query = "DELETE FROM supplier WHERE supplier_id = "+id;
-            boolean result = singleConnection.ExecuteSQL(query);
-            return result;
+            return singleConnection.ExecuteSQL(query);
         }
         catch(Exception e) {
             System.out.println("Error in deleting supplier" + e.getMessage());
@@ -40,8 +38,7 @@ public class SupplierService {
         try{
             String query = "SELECT * FROM supplier";
             singleConnection.setPreparedStatement(query);
-            ResultSet result = singleConnection.ExecutePreparedStatement();
-            return result;
+            return singleConnection.ExecutePreparedStatement();
         }
         catch(Exception e) {
             System.out.println("Error in getting suppliers" + e.getMessage());
@@ -53,8 +50,7 @@ public class SupplierService {
         try{
             String query = "SELECT s.email FROM supplier s JOIN pharmacy_inventory p ON s.supplier_id = p.supplierID  WHERE quantity <= threshold AND s.supplier_id = p.supplierID";
             singleConnection.setPreparedStatement(query);
-            ResultSet result = singleConnection.ExecutePreparedStatement();
-            return result;
+            return singleConnection.ExecutePreparedStatement();
         }
         catch(Exception e) {
             System.out.println("Error in getting supplier email" + e.getMessage());

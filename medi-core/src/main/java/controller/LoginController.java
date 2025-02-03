@@ -4,7 +4,7 @@ import model.User;
 import java.util.ArrayList;
 
 public class LoginController {
-    ArrayList<User>  users;
+    ArrayList<User> users;
 
     public LoginController() {
         users = new ArrayList<>();

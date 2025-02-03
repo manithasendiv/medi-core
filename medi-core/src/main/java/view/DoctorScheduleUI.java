@@ -24,19 +24,9 @@ public class DoctorScheduleUI {
     DoctorScheduleController ObjDoctorScheduleController;
 
     public DoctorScheduleUI(){
-        scheduleTable.setDefaultRenderer(Object.class, new CreateUIComponentDashboard.CustomTableCellRenderer());
-        scheduleTable.setRowHeight(30);
-        scheduleTable.setPreferredSize(new Dimension(700, 50));
-        scheduleTable.setMinimumSize(new Dimension(700, 50));
-        scheduleTable.setMaximumSize(new Dimension(700, 50));
-        scheduleTable.setShowVerticalLines(false);
-        scheduleTable.setFont(new Font("Arial", Font.PLAIN, 12));
-        scheduleTable.setGridColor(Color.WHITE);
-
         updateScheduleTable();
         ObjDoctorScheduleController = new DoctorScheduleController();
         int scheduleCount = 0;
-
 
         addScheduleButton.addActionListener(new ActionListener() {
             @Override
@@ -156,9 +146,18 @@ public class DoctorScheduleUI {
                 }
             }
         });
+
+        scheduleTable.setDefaultRenderer(Object.class, new CreateUIComponentDashboard.CustomTableCellRenderer());
+        scheduleTable.setRowHeight(30);
+        scheduleTable.setPreferredSize(new Dimension(700, 50));
+        scheduleTable.setMinimumSize(new Dimension(700, 50));
+        scheduleTable.setMaximumSize(new Dimension(700, 50));
+        scheduleTable.setShowVerticalLines(false);
+        scheduleTable.setFont(new Font("Arial", Font.PLAIN, 12));
+        scheduleTable.setGridColor(Color.WHITE);
     }
 
-    public JPanel getPanel1(){
+    public JPanel getDoctorScheduleUI(){
         return BackPanel;
     }
 
@@ -225,5 +224,16 @@ public class DoctorScheduleUI {
         addIcon = new ImageIcon(newAddIcon);
         addScheduleButton.setIcon(addIcon);
 
+        ImageIcon updateIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\updated.png");
+        Image updateImage = updateIcon.getImage();
+        Image newUpdateIcon = updateImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        updateIcon = new ImageIcon(newUpdateIcon);
+        updateScheduleButton.setIcon(updateIcon);
+
+        ImageIcon removeIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\remove.png");
+        Image removeImage = removeIcon.getImage();
+        Image newRemoveIcon = removeImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        removeIcon = new ImageIcon(newRemoveIcon);
+        removeOldSchedulesButton.setIcon(removeIcon);
     }
 }

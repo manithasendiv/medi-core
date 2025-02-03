@@ -17,11 +17,9 @@ public class PatientUI {
     private JRadioButton maleRadioButton;
     private JRadioButton femaleRadioButton;
 
-    // create a object using controller class to add patient details to the database
     PatientController objController;
 
     public PatientUI() {
-        // create a object using controller class to add patient details to the database
         objController = new PatientController();
         int patientCount = 0;
 
@@ -47,10 +45,8 @@ public class PatientUI {
                     JOptionPane.showMessageDialog(BackPanel, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else{
-                    // add patient details to the object of model class using controller class
                     objController.addPatient(pid, name, gender, email, contactNumber, address);
 
-                    // add patient details to the database using controller class
                     if (!objController.addPatientToDataBase()) {
                         JOptionPane.showMessageDialog(null, "Error in adding patient");
                         return;
@@ -58,7 +54,6 @@ public class PatientUI {
                     JOptionPane.showMessageDialog(null, "Patient added successfully!");
                 }
 
-                // clear the text fields after adding patient details
                 textName.setText("");
                 textEmail.setText("");
                 textContactNumber.setText("");
@@ -79,7 +74,7 @@ public class PatientUI {
         });
     }
 
-    public JPanel getPanel1() {
+    public JPanel getPatientUI() {
         return BackPanel;
     }
 

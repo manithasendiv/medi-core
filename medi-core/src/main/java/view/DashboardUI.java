@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,16 +21,18 @@ public class DashboardUI {
     public DashboardUI() {
         CardLayout cardLayout = new CardLayout();
         ViewPanel.setLayout(cardLayout);
+
+        logoArea.setOpaque(false);
         sidepanel1.setOpaque(false);
         logoutArea.setOpaque(false);
-        logoArea.setOpaque(false);
+
         ViewPanel.setSize(600, 500);
 
         patientsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PatientUI patientUI = new PatientUI();
-                ViewPanel.add(patientUI.getPanel1(), "patientUI");
+                ViewPanel.add(patientUI.getPatientUI(), "patientUI");
                 cardLayout.show(ViewPanel, "patientUI");
             }
         });
@@ -39,9 +40,9 @@ public class DashboardUI {
         doctorScheduleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ViewPanel.removeAll();
+//                ViewPanel.removeAll();
                 DoctorScheduleUI doctorScheduleUI = new DoctorScheduleUI();
-                ViewPanel.add(doctorScheduleUI.getPanel1(), "doctorScheduleUI");
+                ViewPanel.add(doctorScheduleUI.getDoctorScheduleUI(), "doctorScheduleUI");
                 cardLayout.show(ViewPanel, "doctorScheduleUI");
             }
         });
@@ -50,7 +51,7 @@ public class DashboardUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AppointmentUI appointmentUI = new AppointmentUI();
-                ViewPanel.add(appointmentUI.getPanel1(), "appointmentUI");
+                ViewPanel.add(appointmentUI.getAppointmentUI(), "appointmentUI");
                 cardLayout.show(ViewPanel, "appointmentUI");
             }
         });
@@ -59,7 +60,7 @@ public class DashboardUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReportUI reportUI = new ReportUI();
-                ViewPanel.add(reportUI.getPanel1(), "reportUI");
+                ViewPanel.add(reportUI.getReportUI(), "reportUI");
                 cardLayout.show(ViewPanel, "reportUI");
             }
         });
@@ -69,7 +70,7 @@ public class DashboardUI {
             public void actionPerformed(ActionEvent e) {
                 LoginUI loginUI = new LoginUI();
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(BackPanel);
-                frame.setContentPane(loginUI.getPanel1());
+                frame.setContentPane(loginUI.getLoginUI());
                 frame.revalidate();
             }
         });
@@ -86,7 +87,7 @@ public class DashboardUI {
         frame.setVisible(true);
     }
 
-    public JPanel getPanel1() {
+    public JPanel getDashboardUI() {
         return BackPanel;
     }
 
@@ -96,7 +97,7 @@ public class DashboardUI {
         // TODO: place custom component creation code here
         sidePanel2 = new javax.swing.JPanel() {
             protected void paintComponent(Graphics g) {
-                if (g instanceof Graphics2D) {
+                if (g instanceof Graphics2D g2d) {
 
                     // Define the start and end points of the gradient
                     float startX = 0.0f;
@@ -104,19 +105,16 @@ public class DashboardUI {
                     float endX = 0.1f;
                     float endY = getHeight();
 
-
-                    // Define the positions and colors for the gradient
-                    float[] fractions = {0.0f, 0.5f, 1.0f}; // Positions for each color (0%, 50%, 100%)
+                    float[] fractions = {0.0f, 0.5f, 1.0f};
                     Color[] colors = {
-                            new Color(202, 240, 248, 255),  // First color
-                            new Color(144, 224, 239, 255), // Middle color
-                            new Color(0, 180, 216, 255)   // Last color
+                            new Color(202, 240, 248, 255),
+                            new Color(144, 224, 239, 255),
+                            new Color(0, 180, 216, 255)
                     };
 
                     // Create a LinearGradientPaint object
                     LinearGradientPaint p = new LinearGradientPaint(startX, startY, endX, endY, fractions, colors);
 
-                    Graphics2D g2d = (Graphics2D) g;
                     g2d.setPaint(p);
                     g2d.fillRect(0, 0, getWidth(), getHeight());
                 } else {
@@ -166,6 +164,12 @@ public class DashboardUI {
         Image newAppointmentIcon = appointmentIconImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         appointmentIcon = new ImageIcon(newAppointmentIcon);
         newAppointmentButton.setIcon(appointmentIcon);
+
+        ImageIcon reportIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\report.png");
+        Image reportIconImage = reportIcon.getImage();
+        Image newReportIcon = reportIconImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        reportIcon = new ImageIcon(newReportIcon);
+        reportsButton.setIcon(reportIcon);
 
         ImageIcon signoutIcon = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\exit.png");
         Image signoutIconImage = signoutIcon.getImage();

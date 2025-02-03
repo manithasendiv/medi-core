@@ -13,9 +13,8 @@ public class DoctorScheduleController {
         ObjDoctorScheduleService = new DoctorScheduleService();
     }
 
-    public DoctorSchedule addDoctorSchedule(int did, String name,String specialization, String day, String time) {
+    public void addDoctorSchedule(int did, String name, String specialization, String day, String time) {
         ObjDoctorSchedule = new DoctorSchedule(did, name, specialization, day, time);
-        return ObjDoctorSchedule;
     }
 
     public boolean addDoctorScheduleToDataBase() {
@@ -23,8 +22,7 @@ public class DoctorScheduleController {
     }
 
     public ResultSet getAllSchedule() {
-        ResultSet result = ObjDoctorScheduleService.getAllSchedule();
-        return result;
+        return ObjDoctorScheduleService.getAllSchedule();
     }
 
     public boolean removeDoctorSchedule(int sid) {

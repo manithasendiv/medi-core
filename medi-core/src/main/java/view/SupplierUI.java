@@ -1,6 +1,5 @@
 package view;
 
-import controller.ReportController;
 import controller.SupplierController;
 import model.Email;
 
@@ -41,29 +40,36 @@ public class SupplierUI {
                     JOptionPane.showMessageDialog(BackPanel, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-
-                    // add supplier details to the object of model class using controller class
                     objController.addSupplier(1, name, email);
                     if(!objController.addSupplierToDB()) {
-                        JOptionPane.showMessageDialog(null, "Error in adding supplier");
+                        JOptionPane.showMessageDialog(BackPanel, "Error in adding supplier");
                         return;
                     }
-                    // add supplier details to the database using controller class
-                    JOptionPane.showMessageDialog(null, "Supplier added successfully!");
+                    JOptionPane.showMessageDialog(BackPanel, "Supplier added successfully!");
                     updateSupplierTable();
                 }
+
+                textSupplierName.setText("");
+                textSupplierEmail.setText("");
             }
         });
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int id = Integer.parseInt(textRemoveSupplier.getText());
-                if(!objController.removeSupplier(id)) {
-                    JOptionPane.showMessageDialog(null, "Error in deleting supplier");
-                    return;
+                String string_id = textRemoveSupplier.getText();
+                if(textRemoveSupplier.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(BackPanel, "Please enter a valid ID", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                updateSupplierTable();
-                JOptionPane.showMessageDialog(null, "Supplier deleted successfully!");
+                else {
+                    int id = Integer.parseInt(string_id);
+                    if(!objController.removeSupplier(id)) {
+                        JOptionPane.showMessageDialog(BackPanel, "Error in deleting supplier");
+                        return;
+                    }
+                    updateSupplierTable();
+                    JOptionPane.showMessageDialog(BackPanel, "Supplier deleted successfully!");
+                }
+                textRemoveSupplier.setText("");
             }
         });
         notifyButton.addActionListener(new ActionListener() {
@@ -71,32 +77,32 @@ public class SupplierUI {
             public void actionPerformed(ActionEvent e) {
                 try {
                     ResultSet resultSet = objController.sendSupplierEmail();
+                    if(resultSet == null){
+                        JOptionPane.showMessageDialog(BackPanel, "Low stock items not found");
+                        return;
+                    }
                     ResultSetMetaData metaData = resultSet.getMetaData();
-                    int emailColumnIndex = 1; // Update this based on your actual email column index
+                    int emailColumnIndex = 1;
                     Email email = new Email();
 
                     if(!resultSet.isBeforeFirst()){
                         email.sendEmail(resultSet.getString(emailColumnIndex), "final test", "Please restock the inventory.");
-                        JOptionPane.showMessageDialog(null, "Email sent to " + resultSet.getString(emailColumnIndex), "Email Sent Successfully", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(BackPanel, "Email sent to " + resultSet.getString(emailColumnIndex), "Email Sent Successfully", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else{
-                        // Process every row in the result set
                         while (resultSet.next()) {
-                            String recipientEmail = resultSet.getString(emailColumnIndex); // Fetch email from current row
+                            String recipientEmail = resultSet.getString(emailColumnIndex);
 
                             if (recipientEmail != null && !recipientEmail.trim().isEmpty()) {
-                                email.sendEmail(recipientEmail, "final test", "Please restock the inventory.");
-                                JOptionPane.showMessageDialog(null, "Email sent to " + recipientEmail);
+                                email.sendEmail(recipientEmail, "Restock Remainder", "Please restock the inventory.");
+                                JOptionPane.showMessageDialog(BackPanel, "Email sent to " + recipientEmail);
                             } else {
                                 System.out.println("Skipping empty email address.");
                             }
                         }
                     }
-
-
-
                 } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Error in sending email");
+                    JOptionPane.showMessageDialog(BackPanel, "Error in sending email");
                     throw new RuntimeException(ex);
                 }
             }
@@ -121,7 +127,6 @@ public class SupplierUI {
                 Vector row = new Vector(columns);
                 for (int i = 1; i <= columns; i++) {
                     row.addElement(resultSet.getObject(i));
-                    //System.out.println(resultSet.getObject(i));
                 }
                 model.addRow(row);
             }
@@ -130,6 +135,10 @@ public class SupplierUI {
             JOptionPane.showMessageDialog(null, "Error in fetching data from database");
 
         }
+    }
+
+    public JPanel getSupplierUI() {
+        return BackPanel;
     }
 
     public static void main(String[] args) {
@@ -141,14 +150,9 @@ public class SupplierUI {
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     }
 
-    public JPanel getBackPanel() {
-        return BackPanel;
-    }
-
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        // Custom header creation
         header = new javax.swing.JPanel(){
             protected void paintComponent(Graphics g) {
                 if (g instanceof Graphics2D) {
@@ -163,7 +167,7 @@ public class SupplierUI {
                 }
             }
         };
-        // Custom table creation
+
         DefaultTableModel model = new DefaultTableModel();
         SupplierTable = new JTable(model);
 
@@ -184,12 +188,30 @@ public class SupplierUI {
 
         addSupplierButton = new CreateUIComponentDashboard.CustomButton("Add Supplier");
         removeButton = new CreateUIComponentDashboard.CustomButton("Remove Supplier");
-        removeButton.setMaximumSize(new Dimension(100, 30));
-        removeButton.setMinimumSize(new Dimension(100, 30));
-        removeButton.setPreferredSize(new Dimension(100, 30));
+        removeButton.setMaximumSize(new Dimension(150, 30));
+        removeButton.setMinimumSize(new Dimension(150, 30));
+        removeButton.setPreferredSize(new Dimension(150, 30));
         notifyButton = new CreateUIComponentDashboard.CustomButton("Notify Supplier");
         notifyButton.setPreferredSize(new Dimension(100, 30));
         notifyButton.setMaximumSize(new Dimension(100, 30));
         notifyButton.setMinimumSize(new Dimension(100, 30));
+
+        ImageIcon addSupplier = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\supplier.png");
+        Image addSupplierImage = addSupplier.getImage();
+        Image newAddSupplier = addSupplierImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        addSupplier = new ImageIcon(newAddSupplier);
+        addSupplierButton.setIcon(addSupplier);
+
+        ImageIcon removeSupplier = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\remove.png");
+        Image removeSupplierImage = removeSupplier.getImage();
+        Image newRemoveSupplier = removeSupplierImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        removeSupplier = new ImageIcon(newRemoveSupplier);
+        removeButton.setIcon(removeSupplier);
+
+        ImageIcon notifySupplier = new ImageIcon("D:\\y1s2\\OOP\\group assignment\\Project\\medi-core\\src\\main\\java\\assets\\icons\\Pharmacist\\notification.png");
+        Image notifySupplierImage = notifySupplier.getImage();
+        Image newNotifySupplier = notifySupplierImage.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        notifySupplier = new ImageIcon(newNotifySupplier);
+        notifyButton.setIcon(notifySupplier);
     }
 }
