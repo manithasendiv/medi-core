@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="medi-core:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/medi_core_jar2</output-path>
+    <root id="archive" name="medi-core.jar">
+      <element id="module-output" name="medi-core" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.19.4/protobuf-java-3.19.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/mysql/mysql-connector-j/8.0.31/mysql-connector-j-8.0.31.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/sun/mail/jakarta.mail/2.0.1/jakarta.mail-2.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/sun/activation/jakarta.activation/2.0.1/jakarta.activation-2.0.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
